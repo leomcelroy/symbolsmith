@@ -24,14 +24,13 @@ function readFileJS(file) {
   };
 }
 
-function upload(files, extensions = []) {
+function upload(files, state) {
   let file = files[0];
   let fileName = file.name.split(".");
   let name = fileName[0];
-  const extension = fileName[fileName.length - 1];
 
-  // if (extensions.length > 0 && !extensions.includes(extension)) throw "Extension not recongized: " + fileName;
-  
+  const extension = fileName.at(-1);
+
   // TODO: if js then drop and run
   // TODO: if kicad mod readFile as is
   if (extension === "kicad_mod") {
@@ -39,7 +38,7 @@ function upload(files, extensions = []) {
   } else if (extension === "js") {
     readFileJS(file);
   } else if (extension === "svg") {
-    readFileSVG(file);
+    readFileSVG(file, { name, cm: state.codemirror });
   } else {
     throw Error("Unknown extension:", extension);
   }
@@ -59,9 +58,11 @@ function makePathData(pl) {
   return str;
 }
 
-function readFileSVG(file) {
+async function readFileSVG(file, { name, cm }) {
   var reader = new FileReader();
   reader.readAsText(file);
+
+  console.log(file);
 
   reader.onloadend = event => {
     let text = reader.result;
@@ -70,27 +71,19 @@ function readFileSVG(file) {
     const doc = parser.parseFromString(text, "image/svg+xml");
     const svg = doc.querySelector("svg");
 
-    // const window = new Window
-    // window.document.documentElement.innerHTML = text;
-    // const svg = window.document.documentElement;
+    const pls = flattenSVG(svg, { maxError: 0.001 })
+      .map(x => x.points
+        .map(pt => pt
+          .map(n => Math.round(n*1000)/1000)
+        )
+      );
 
-    // text = text.replace(/<\?xml.*>\n/g, "");
-    // const div = document.createElement("div");
-    // div.innerHTML = text;
+    const newLine = `const ${name.replaceAll(/\s/g, "_").replaceAll(/\(|\)/g, "")} = ${JSON.stringify(pls)};\n`;
 
-    const pls = flattenSVG(svg, { maxError: 0.001 });
-
-    const newComponent = {};
-
-    pls.forEach((pl, i) => {
-      newComponent[i] = {
-        shape: makePathData(pl),
-        "pos":[ 0, 0 ],
-        "layers": [ "F.Cu" ],
-        // index ?
-      }
-    })
-    dispatch("UPLOAD_COMP_OBJ", { obj: newComponent });
+    cm.view.dispatch({
+      changes: { from: 0, insert: newLine }
+    });
+    
   };
 
 }
@@ -102,7 +95,7 @@ export function addDropUpload(state, bodyListener) {
 
     document.querySelector(".drop-modal").classList.add("hidden");   
 
-    upload(files);
+    upload(files, state);
 
     pauseEvent(evt);
   });
