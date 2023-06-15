@@ -78,7 +78,7 @@ async function readFileSVG(file, { name, cm }) {
         )
       );
 
-    const newLine = `const ${name.replaceAll(/\s/g, "_").replaceAll(/\(|\)/g, "")} = ${JSON.stringify(pls)};\n`;
+    const newLine = `const _${name.replaceAll(/\s/g, "_").replaceAll(/\(|\)/g, "")} = ${JSON.stringify(pls)};\n`;
 
     cm.view.dispatch({
       changes: { from: 0, insert: newLine }
