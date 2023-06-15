@@ -108,6 +108,8 @@ export const makeIncluded = (flatten) => ({
     Nos
   },
   setWorkarea(limits) {
+    limits.x.sort((a, b) => a - b);
+    limits.y.sort((a, b) => a - b);
     global_state.limits = limits;
   },
   createText,
