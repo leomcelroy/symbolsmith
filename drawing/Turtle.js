@@ -1,7 +1,9 @@
 import { flattenSVG } from "flatten-svg";
 
 export class Turtle {
-  constructor(start = { 0: 0, 1: 1, x: 0, y: 0 }) {
+  constructor(start = [0, 0]) {
+    start = convertPt(start);
+
     this.drawing = true;
     this.location = start;
     this.angle = 0;
@@ -66,7 +68,7 @@ export class Turtle {
       this.forward(distanceStep);
     }
 
-    this.setAngle(ogAngle + angle);
+    this.setAngle(ogAngle - angle);
 
     return this;
   }
@@ -166,6 +168,17 @@ export class Turtle {
   applyPts(fn) {
     return applyPts(this, fn);
   }
+
+  ptArrs() {
+    this.applyPts(pt => [pt.x, pt.y]);
+
+    return this;
+  }
+
+  get pos() {
+    const { x, y } = this.location;
+    return [ x, y ];
+  }
 }
 
 function iteratePath(turtle, fn) {
@@ -176,7 +189,7 @@ function iteratePath(turtle, fn) {
 
 function convertPt(pt) {
   if (Array.isArray(pt)) {
-    return { x: pt[0], y: pt[1] }
+    return { 0: pt[0], 1: pt[1], x: pt[0], y: pt[1] }
   } else {
     return pt;
   }

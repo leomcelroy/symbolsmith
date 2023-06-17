@@ -2,10 +2,10 @@ const mapPtFromRule = rule => ([ x, y ]) => {
 
   const [ a, b, c, d, tx, ty ] = getMatrixRule(rule);
 
-  return {
-    x: x * a + y * c + tx,
-    y: x * b + y * d + ty
-  };
+  return [
+    x * a + y * c + tx,
+    x * b + y * d + ty
+  ];
 }
 
 function getMatrixRule({ dx, dy, sx, sy, rotate, skew }) {
@@ -60,7 +60,6 @@ function getMatrix(dx, dy, sx, sy, angle, skewness) {
 export function transform(shape, transformations) {
   const fn = mapPtFromRule(transformations);
   shape.forEach((pl, i) => {
-    console.log(pl.map(fn));
     shape[i] = pl.map(fn);
   })
 

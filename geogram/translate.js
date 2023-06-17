@@ -15,7 +15,13 @@ export const translate = (shape, toPoint, fromPoint = [ 0, 0 ] ) => {
 
 const applyFn = (shape, fn) => {
   shape.forEach((pl, i) => {
-    shape[i] = pl.map(fn);
+    // shape[i] = pl.map(fn);
+    
+    pl.forEach((pt, i) => {
+      const [ newX, newY ] = fn(pt);
+      pt[0] = newX;
+      pt[1] = newY;
+    })
   })
 
   return shape;

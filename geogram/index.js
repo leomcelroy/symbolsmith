@@ -174,7 +174,7 @@ const rectangle = (w, h) => {
   const p3 = [ -w/2, -h/2 ];
 
   return [
-    [ p0, p1, p2, p3, p0 ]
+    [ p0, p1, p2, p3, [...p0] ]
   ]
 }
 
@@ -241,5 +241,6 @@ export {
   path,
   path2,
   boolean,
-  convertPtType
+  convertPtType,
+  transform
 }

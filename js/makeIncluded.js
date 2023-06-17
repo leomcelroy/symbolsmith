@@ -14,6 +14,10 @@ import * as Nos from "../drawing/noise-rav.js";
 import { noise } from "../drawing/noise.js";
 import { Turtle } from "../drawing/Turtle.js";
 import { TraceSkeleton }  from "../drawing/TraceSkeleton.js";
+import { PoissonDiscGrid }  from "../drawing/PoissonDiscGrid.js";
+import { SimplexNoise }  from "../drawing/SimplexNoise.js";
+
+import * as gram from "https://leomcelroy.com/gram-js/exports.js";
 
 class IncludedPCB extends PCB {
   constructor(...args) {
@@ -105,7 +109,11 @@ export const makeIncluded = (flatten) => ({
     rand,
     randomIntFromRange,
     vec,
-    Nos
+    Nos,
+    SimplexNoise,
+    PoissonDiscGrid,
+    gram,
+    newGram: () => new gram.Turtle(),
   },
   setWorkarea(limits) {
     limits.x.sort((a, b) => a - b);
