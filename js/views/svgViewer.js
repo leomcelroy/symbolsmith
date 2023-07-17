@@ -19,10 +19,11 @@ const drawPt = ({ pt, start, end, text }, i, scale) => svg`
 const drawP = ({ d, stroke, fillRule, strokeWidth, fill, strokeLinecap, strokeLinejoin }) => svg`
   <path 
     d=${d} 
+    vector-effect="non-scaling-stroke"
     stroke=${stroke} 
     stroke-linecap=${strokeLinecap}
     stroke-linejoin=${strokeLinejoin}
-    stroke-width=${strokeWidth} 
+    stroke-width=${3 /*strokeWidth*/} 
     fill-rule=${fillRule} 
     fill=${fill}></path>
 `

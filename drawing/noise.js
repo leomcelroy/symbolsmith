@@ -1,3 +1,5 @@
+import { rand } from "./rand.js";
+
 let PERLIN_YWRAPB = 4;
 let PERLIN_YWRAP = 1<<PERLIN_YWRAPB;
 let PERLIN_ZWRAPB = 8;
@@ -23,7 +25,7 @@ export function noise(vector, options = {}) {
   if (perlin == null) {
     perlin = new Array(PERLIN_SIZE + 1);
     for (let i = 0; i < PERLIN_SIZE + 1; i++) {
-      perlin[i] = Math.random();
+      perlin[i] = rand();
     }
   }
 

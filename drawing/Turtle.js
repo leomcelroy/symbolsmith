@@ -8,11 +8,9 @@ export class Turtle {
     this.location = start;
     this.angle = 0;
     this.path = [
-      [start]
+      [ start ]
     ];
     
-    this.size = 1;
-    this.color = "black";
   }
 
   up() {
@@ -57,7 +55,7 @@ export class Turtle {
     const length = radius*theta/180*Math.PI;
 
     const ogAngle = this.angle;
-    const thetaStep = 1;
+    const thetaStep = 0.2;
     const steps = theta/thetaStep;
     const distanceStep = length/steps;
 
@@ -118,6 +116,8 @@ export class Turtle {
       pt.y = newPt.y;
     })
   }
+
+  flip() {} // TODO
 
   fromSVG(svgString) {
     const parser = new DOMParser();
